@@ -29,4 +29,20 @@
 <!-- 1st way of injected react to our project : 1st file is core react algorithm framework. 2nd file is react library which is useful for Dom operations.-->
 <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
 <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+
+<script>
+    // first we are creating element in react.
+    // const heading = React.createElement("div", {}, "Hello world from React!");
+    const heading = React.createElement("h1", {}, "Hello world from React!");
+    // const heading = React.createElement("div", {}, "<span> HI </span>"); // 3rd argument mai directly html tag nahi likh skte , only text you can write, agar kuch hoga to aage ke episode mai pta chalega.
+
+    // this is root where all the react code render.
+    const root = ReactDOM.createRoot(document.getElementById("root"));
+    // ReactDOM.createRoot(document.getElementbyId("root"));
+
+    // rendering our code in root, with the help of render function.
+    root.render(heading);
+
+    
+</script>
 </html>
