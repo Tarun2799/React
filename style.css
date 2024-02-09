@@ -2,3 +2,13 @@
 #heading{
     color: rgb(137, 93, 178);
 }
+
+h1{
+    color: rgb(137, 93, 178);
+    font-family: cursive;
+}
+
+h2{
+    color: rgb(128, 255, 0);
+    font-family: cursive;
+}
