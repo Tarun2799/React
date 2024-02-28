@@ -87,15 +87,17 @@
     margin: 0.5rem 0;
 }
 
-.Search{
+.Tools{
     padding-left: 100px;
+    display: flex;
+    justify-content: space-evenly;
 }
-.Search>input{
+.Tools input{
     margin: 5px 3px;
     padding: 2px 3px;
 }
 
-.Search button{
+.Tools button{
     margin: 5px 3px;
     padding: 2px 3px;
 }
