@@ -2,6 +2,10 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import Header from "./components/Header";
 import Body from "./components/Body";
+import About from "./components/About";
+import Contact from "./components/Contact";
+import Error from "./components/Error";
+import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
 
 // const heading = (
 //     <div className="heading">
@@ -106,21 +110,81 @@ import Body from "./components/Body";
 //     }
 //   }
 
+// const App = ()=>(
+//     <div className="App-layout">
+//         <Header/>
+//         <Body/>
+//     </div>
+// )
+
+// Because we are using children routes than we have to use the Outlet in the main App.
+
+const App = () => {
+    return (
+        <div className="App-layout">
+            <Header/>
+            {/**This is a Comment in JS. Outlet is like a container component that are going to contain different component acoording to the route. */}
+            <Outlet/>
+        </div>
+    )
+}
+
+
+
+// here , we are using createBrowserRouter : first time.
+// const appRouter = createBrowserRouter([
+//     {
+//         path: "/",
+//         element: <App/>,
+//         errorElement: <Error/>,
+//     },
+//     {
+//         path: "/about",
+//         element: <About/>,
+//     },
+//     {
+//         path: "/contact",
+//         element: <Contact/>,
+//     }, 
+// ]);
+
+// Let's develop children routes.
+
+const appRouter = createBrowserRouter([
+    {
+        path: '/',
+        element: <App/>,
+        children: [
+            {
+                path: '/',
+                element: <Body/>,
+            },
+            {
+                path: '/about',
+                element: <About/>,
+            },
+            {
+                path: '/contact',
+                element: <Contact/>,
+            }
+        ],
+        errorElement: <Error/>,
+    }
+])
+// Let's add, navigation in our App with <Link/> given by react-router-dom. but we have to use this inside header.
 
 
 
 
-
-
-
-const App = ()=>(
-    <div className="App-layout">
-        <Header/>
-        <Body/>
-    </div>
-)
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
 // root.render(App());
-root.render(<App/>);
+// root.render(<App/>); // Earlier we were rendering app layout directly, now instead of this , we will provide this router configuration to our app. RouterProvider takes  prop: router={appROuter}. This RouterProvider is a recommended route from thisi library itself.
+
+root.render(<RouterProvider router={appRouter}/>);
+
+// This is the ROOT level component of our App, over here we have to create routing configuration. we will use createBrowserRouter(take some configuration) : create routing configuration for us. Import this. CONFIGURATION means some information that will define what will happen on the specific route.
+// Each Object is telling what is the path and what will happen on that path  And now i need to provide this configuration to rendrr it: RouterProvider => actually provide this configuration to our app.
+//  There are different type of routers which tis library provide
+

@@ -27,3 +27,6 @@
 
 
 ## Our browsers block us to call api from one origin to different origin. (In our case don't calling this from localhost)
+
+### Let's learn dynamic routing: when we go to /res => /res/jvsbbknc.
+but first we are creating the Menu page of the restaurant.

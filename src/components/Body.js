@@ -29,20 +29,25 @@ const Body = ()=>{
 
     const [searchText, setSearchText] = useState("");
 
+    // useEffect(()=>{
+    //     // console.log("useEffect called");
+    //     fetchData();
+    // },[]); //My mistake to give an empty array i.e. why api is not laoading.
+
     useEffect(()=>{
         // console.log("useEffect called");
         fetchData();
-    },[]);
+    }, []);
 
     const fetchData = async ()=>{
         // this fetch is given by the BROWSERS.
         
-        const data = await fetch(
-            "https://www.swiggy.com/mapi/homepage/getCards?lat=21.1458004&lng=79.0881546"
-        );
         // const data = await fetch(
-        //     "https://www.swiggy.com/mapi/homepage/getCards?lat=28.7040592&lng=77.10249019999999"
+        //     "https://www.swiggy.com/mapi/homepage/getCards?lat=21.1458004&lng=79.0881546"
         // );
+        const data = await fetch(
+            "https://www.swiggy.com/mapi/homepage/getCards?lat=28.7040592&lng=77.10249019999999"
+        );
 
         // const data = await fetch(
         //     "https://www.swiggy.com/mapi/homepage/getCards?lat=29.6856929&lng=76.9904825"
