@@ -37,7 +37,7 @@ const Body = ()=>{
     useEffect(()=>{
         // console.log("useEffect called");
         fetchData();
-    }, []);
+    });
 
     const fetchData = async ()=>{
         // this fetch is given by the BROWSERS.
