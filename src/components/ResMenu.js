@@ -1,31 +1,18 @@
 import { useEffect , useState } from "react";
+import { Link } from "react-router-dom";
 import Shimmer from "./Shimmer";
 import { useParams } from "react-router-dom";
 import { MENU_API } from "../utils/constants";
+import useResMenu from "../utils/useResMenu";
 
 function ResMenu(){
 
-    const [ resInfo, setResInfo ] = useState(null);
     
     // const params = useParams();
     // console.log(params); // gives us resId
     const {resId} = useParams();
 
-    useEffect(()=>{
-        fetchMenu();
-    },[])
-
-    const fetchMenu = async ()=>{
-
-        const data = await fetch( MENU_API+resId)
-
-        const json = await data.json()
-
-        console.log(json);
-
-        setResInfo(json.data);
-
-    }
+    const resInfo = useResMenu(resId);
 
     if(resInfo === null) return <Shimmer/>;
     
@@ -38,6 +25,8 @@ function ResMenu(){
 
     return (
         <div className="res-menu">
+
+            <Link to={"/"}> <h1 className="back">Back to Home</h1></Link>
             <h1>{name}</h1>
             <p>{cuisines.join(", ")} - {costForTwoMessage} person</p>
             <br></br>

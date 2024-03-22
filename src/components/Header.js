@@ -1,6 +1,7 @@
 
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import useOnlineStatus from "../utils/useOnlineStatus";
 
 // Whenever this State variable will be change using this SetbtnName(), react will re-render this Header component and all the updated value will be there. Calculating tht diff between old state of vDOM and new state of UPDATED vDOM. and updating the UI, everything is happening. AS soon as we click on the button
 
@@ -15,12 +16,15 @@ const Header = ()=>{
 
     const [btnName, setBtnName] = useState("Login");
 
+    const onlineStatus = useOnlineStatus();
+
     return(
     <div className="header">
         <nav className="navbar">
             <div className="logo">Logo</div>
             <div className="nav-items">
                 <ul className="items">
+                    <li> Online Status: {onlineStatus ? "✅" : "🛑"} </li>
                     <li><Link to="/">Home</Link> </li>
                     <li> <Link to="/about" >About</Link></li>
                     <li> <Link to="/contact"> Contact Us</Link></li>
