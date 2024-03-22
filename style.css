@@ -15,6 +15,11 @@
     padding: 2rem 0;
     height: 5rem;
 }
+
+.nav-items .items li a{
+    text-decoration: none;
+    color: #0f0f0f;
+}
 .navbar{
     display: flex;
     justify-content: space-between;
@@ -56,6 +61,11 @@
     margin: 1rem 1rem;
     padding: 10px;
     background-color: #f0f0f0;
+
+}
+
+.res-card .data h3{
+    text-decoration: none;
 }
 
 .res-card:hover{
@@ -131,3 +141,4 @@
     cursor: pointer;
     width: 90px;
 }
+

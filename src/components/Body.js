@@ -2,6 +2,7 @@ import Card from "./Card";
 import resList from "../utils/mockData";
 import { useEffect, useState } from "react";
 import Shimmer from "./Shimmer";
+import { Link } from "react-router-dom";
 
 const Body = ()=>{
     
@@ -32,34 +33,45 @@ const Body = ()=>{
     // useEffect(()=>{
     //     // console.log("useEffect called");
     //     fetchData();
-    // },[]); //My mistake to give an empty array i.e. why api is not laoading.
+    // },[]); 
 
     useEffect(()=>{
         // console.log("useEffect called");
         fetchData();
-    });
+    },[]);
 
-    const fetchData = async ()=>{
-        // this fetch is given by the BROWSERS.
-        
-        // const data = await fetch(
-        //     "https://www.swiggy.com/mapi/homepage/getCards?lat=21.1458004&lng=79.0881546"
-        // );
-        const data = await fetch(
-            "https://www.swiggy.com/mapi/homepage/getCards?lat=28.7040592&lng=77.10249019999999"
-        );
-
-        // const data = await fetch(
-        //     "https://www.swiggy.com/mapi/homepage/getCards?lat=29.6856929&lng=76.9904825"
-        // );
-
+    const fetchData = async() => {
+        const data = await fetch("https://www.swiggy.com/dapi/restaurants/list/v5?lat=28.7040592&lng=77.10249019999999&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING");
         const json = await data.json();
-
-        console.log(json);
-        // setlistOfRestaurants(json?.data?.success?.cards[4]?.gridWidget?.gridElements?.infoWithStyle?.restaurants);
-        setlistOfRestaurants(json?.data?.success?.cards[4]?.gridWidget?.gridElements?.infoWithStyle?.restaurants);
-        setFilteredRestuarants(json?.data?.success?.cards[4]?.gridWidget?.gridElements?.infoWithStyle?.restaurants);
+       
+        setlistOfRestaurants(json?.data?.cards[4]?.card?.card?.gridElements?.infoWithStyle?.restaurants);
+        setFilteredRestuarants(json?.data?.cards[4]?.card?.card?.gridElements?.infoWithStyle?.restaurants);
     }
+
+    // const fetchData = async ()=>{
+    //     // this fetch is given by the BROWSERS.
+        
+    //     // const data = await fetch(
+    //     //     "https://www.swiggy.com/mapi/homepage/getCards?lat=21.1458004&lng=79.0881546"
+    //     // );
+    //     // const data = await fetch(
+    //     //     "https://www.swiggy.com/dapi/restaurants/list/v5?lat=12.9715987&lng=77.5945627&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING"
+    //     // );
+    //     const data = await fetch(
+    //         "https://www.swiggy.com/mapi/homepage/getCards?lat=28.7040592&lng=77.10249019999999"
+    //     );
+
+    //     // const data = await fetch(
+    //     //     "https://www.swiggy.com/mapi/homepage/getCards?lat=29.6856929&lng=76.9904825"
+    //     // );
+
+    //     const json = await data.json();
+
+    //     console.log(json);
+    //     // setlistOfRestaurants(json?.data?.success?.cards[4]?.gridWidget?.gridElements?.infoWithStyle?.restaurants);
+    //     setlistOfRestaurants(json?.data?.success?.cards[4]?.gridWidget?.gridElements?.infoWithStyle?.restaurants);
+    //     setFilteredRestuarants(json?.data?.success?.cards[4]?.gridWidget?.gridElements?.infoWithStyle?.restaurants);
+    // }
 
 
     // "Conditional rendering": Having a condition to render our components.
@@ -107,7 +119,8 @@ const Body = ()=>{
             // ) )
 
             filteredRestuarants.map( (restaurant) => (
-                <Card key={restaurant.info.id} resData={restaurant} />
+                <Link key={restaurant.info.id} to={"/restaurants/"+restaurant.info.id}>
+                <Card  resData={restaurant} /></Link>
             ) )
         }
             
