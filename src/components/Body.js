@@ -1,4 +1,4 @@
-import Card from "./Card";
+import Card, {withPromotedLabel} from "./Card";
 import resList from "../utils/mockData";
 import { useEffect, useState } from "react";
 import Shimmer from "./Shimmer";
@@ -30,6 +30,9 @@ const Body = ()=>{
     const [filteredRestuarants, setFilteredRestuarants] = useState([]);
 
     const [searchText, setSearchText] = useState("");
+    
+    //withPromotedLabel is a HOC.
+    const RestaurantCardPromoted = withPromotedLabel(Card);
 
     // useEffect(()=>{
     //     // console.log("useEffect called");
@@ -89,12 +92,12 @@ const Body = ()=>{
     // Conditional Rendering
     return listOfRestaurants.length === 0? <Shimmer/> :  (
     <div className="body">
-        <div className="Tools">
-            <div className="search-btn">
-                <input type="search" placeholder="search" value={searchText} onChange={(e)=>{
+        <div className="Tools flex justify-start items-center">
+            <div className="search-btn m-4 p-1">
+                <input className="border border-solid border-black p-1 rounded-lg" type="search" placeholder="search" value={searchText} onChange={(e)=>{
                     setSearchText(e.target.value);
                 }}></input>
-                <button onClick={
+                <button className="mx-2 p-2 bg-green-200 rounded-lg" onClick={
                     ()=>{
                         console.log(searchText);
                         const filteredRestaurants = listOfRestaurants.filter((res)=>res.info.name.toLowerCase().includes(searchText.toLowerCase()));
@@ -105,8 +108,8 @@ const Body = ()=>{
                 }>Search</button>
             </div>
 
-            <div className="filter">
-                <button className="filter-btn"
+            <div className="filter ">
+                <button className="filter-btn mx-2 p-2  bg-gray-200 rounded-lg"
                 onClick={
                     ()=>{
                         let filteredList = listOfRestaurants.filter( (res)=> res.info.avgRating > 4.2 )
@@ -118,7 +121,7 @@ const Body = ()=>{
                 } >Top Rated Restaurant</button>
             </div>
         </div>
-        <div className="cards-container">
+        <div className="cards-container flex flex-wrap">
             
         {
             // listOfRestaurants.map( (restaurant) => (
@@ -127,7 +130,11 @@ const Body = ()=>{
 
             filteredRestuarants.map( (restaurant) => (
                 <Link key={restaurant.info.id} to={"/restaurants/"+restaurant.info.id}>
-                <Card  resData={restaurant} /></Link>
+                {
+                    restaurant.info.isOpen ? (<RestaurantCardPromoted resData={restaurant} />) : (<Card  resData={restaurant} />)
+                }
+                
+                </Link>
             ) )
         }
             
