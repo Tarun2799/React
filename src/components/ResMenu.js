@@ -21,7 +21,9 @@ function ResMenu(){
     const { itemCards } =resInfo?.cards[4]?.groupedCard?.cardGroupMap?.REGULAR?.cards[1]?.card?.card;
     
     console.log(itemCards)
+    const category = resInfo?.cards[4]?.groupedCard?.cardGroupMap?.REGULAR?.cards.filter(c => c.card?.card?.["@type"] === "type.googleapis.com/swiggy.presentation.food.v2.ItemCategory")
 
+        console.log(category);
 
     return (
         <div className="res-menu">
