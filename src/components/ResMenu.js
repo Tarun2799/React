@@ -4,6 +4,7 @@ import Shimmer from "./Shimmer";
 import { useParams } from "react-router-dom";
 import { MENU_API } from "../utils/constants";
 import useResMenu from "../utils/useResMenu";
+import RestaurantCategory from "./RestaurantCategory";
 
 function ResMenu(){
 
@@ -13,6 +14,8 @@ function ResMenu(){
     const {resId} = useParams();
 
     const resInfo = useResMenu(resId);
+    // we are controoling the state of RestaurantCategory by this showIndex. How can a child change the STATE VARIABLE OF PARENT? It's not posiible directly but it's possible. by passing setShowIndex() to the child.
+    const [showIndex, setShowIndex] = useState(0);
 
     if(resInfo === null) return <Shimmer/>;
     
@@ -21,25 +24,34 @@ function ResMenu(){
     const { itemCards } =resInfo?.cards[4]?.groupedCard?.cardGroupMap?.REGULAR?.cards[1]?.card?.card;
     
     console.log(itemCards)
-    const category = resInfo?.cards[4]?.groupedCard?.cardGroupMap?.REGULAR?.cards.filter(c => c.card?.card?.["@type"] === "type.googleapis.com/swiggy.presentation.food.v2.ItemCategory")
+    // we can write .card = ["card"] like that i.e. why we write["@type"], we are not able to write this as .@type.
+    const categories = resInfo?.cards[4]?.groupedCard?.cardGroupMap?.REGULAR?.cards.filter(c => c.card?.card?.["@type"] === "type.googleapis.com/swiggy.presentation.food.v2.ItemCategory")
 
-        console.log(category);
+        // console.log(categories);
 
     return (
-        <div className="res-menu">
+        <>
+            <Link to={"/"}> <h1 className="w-32 font-semibold p-2 m-4 rounded-xl bg-black text-white shadow-lg">Back to Home</h1></Link>
+        <div className="res-menu text-center">
 
-            <Link to={"/"}> <h1 className="back">Back to Home</h1></Link>
-            <h1>{name}</h1>
-            <p>{cuisines.join(", ")} - {costForTwoMessage} person</p>
+            <h1 className="text-2xl font-bold px-20 my-4">{name}</h1>
+            <p className="px-20 font-bold text-lg">{cuisines.join(", ")} - {costForTwoMessage} person</p>
             <br></br>
-            <h2>Menu</h2>
+
+            {/* categories accordians, And we are controlling the state by showItems prop.  */}
+            {categories.map((category, index) => (
+                <RestaurantCategory key={category?.card?.card?.title} data={category?.card?.card} showItems={index === showIndex ? true : false} setShowIndex={() => setShowIndex(index)}/> 
+            ))}
+
+            {/* <h2 className="px-10 ">Menu</h2> */}
             
-            {
+            {/* {
                 itemCards.map( (item) => (
-                    <li key={ item.card.info.id}> {item.card.info.name}-{" Rs"} {item.card.info.price/100 || item.card.info.defaultPrice/100} </li>
+                    <li className="px-30" key={ item.card.info.id}> {item.card.info.name}-{" Rs"} {item.card.info.price/100 || item.card.info.defaultPrice/100} </li>
                 ) )
-            }
+            } */}
         </div>
+        </>
     )
 };
 
