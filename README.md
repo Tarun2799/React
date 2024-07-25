@@ -30,3 +30,11 @@
 
 ### Let's learn dynamic routing: when we go to /res => /res/jvsbbknc.
 but first we are creating the Menu page of the restaurant.
+
+
+# REDUX TOOLKIT
+- Install @reduxjs/toolkit and react-redux
+- Build our store
+- Connect our store to our app
+- Slice(cartSlice) - reducer function
+- Selector

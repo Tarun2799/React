@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import ItemList from './ItemList';
+import ShimmerList from './ShimmerList';
 
 const RestaurantCategory = ({data, showItems, setShowIndex}) => {
 

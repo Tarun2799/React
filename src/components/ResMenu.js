@@ -1,6 +1,7 @@
 import { useEffect , useState } from "react";
 import { Link } from "react-router-dom";
 import Shimmer from "./Shimmer";
+import ShimmerList from "./ShimmerList";
 import { useParams } from "react-router-dom";
 import { MENU_API } from "../utils/constants";
 import useResMenu from "../utils/useResMenu";
@@ -15,9 +16,9 @@ function ResMenu(){
 
     const resInfo = useResMenu(resId);
     // we are controoling the state of RestaurantCategory by this showIndex. How can a child change the STATE VARIABLE OF PARENT? It's not posiible directly but it's possible. by passing setShowIndex() to the child.
-    const [showIndex, setShowIndex] = useState(0);
+    const [showIndex, setShowIndex] = useState(null);
 
-    if(resInfo === null) return <Shimmer/>;
+    if(resInfo === null) return <ShimmerList/>;
     
     const { name, cuisines, costForTwoMessage } = resInfo?.cards[2]?.card?.card?.info;
     

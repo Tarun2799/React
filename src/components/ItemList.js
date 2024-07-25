@@ -1,9 +1,22 @@
 
 import React from 'react';
 import { CDN_URL } from '../utils/constants';
+import { addItem } from '../utils/cartSlice';
+import { useDispatch } from 'react-redux';
+import Shimmer from './Shimmer';
+
 
 const ItemList = ({items}) => {
-  return (
+
+  const dispatch = useDispatch();
+
+  const handleAddItem = (item)=>{
+    //dispatch an action
+    dispatch(addItem(item))
+  };
+
+
+  return(
     <div>
         {items.map( (item)=> (
             <div key={item.card.info.id} className='p-2 m-2 border-gray-200 border-b-2 text-left flex justify-between'>
@@ -16,7 +29,7 @@ const ItemList = ({items}) => {
                 </div>
                 <div className='w-3/12 p-4'>
                   <div className='absolute'>
-                    <button className='p-2 my-1 rounded-xl bg-black text-white shadow-lg mx-10'>Add +</button>
+                    <button className='p-2 my-1 rounded-xl bg-black text-white shadow-lg mx-10' onClick={()=> handleAddItem(item)}>Add +</button>
                   </div>
                   <img src={CDN_URL+item.card.info.imageId} className='w-full'/>
                 </div>

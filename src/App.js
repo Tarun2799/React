@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom/client";
 import Header from "./components/Header";
 import Body from "./components/Body";
@@ -7,6 +7,14 @@ import Contact from "./components/Contact";
 import Error from "./components/Error";
 import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
 import ResMenu from "./components/ResMenu";
+import UserContext from "./utils/UserContext";
+import { Provider } from "react-redux";
+import appStore from "./utils/appStore";
+import Cart from "./components/Cart";
+import Login from "./components/Login";
+import Register from "./components/Register";
+import { Auth0Provider, useAuth0 } from "@auth0/auth0-react";
+import Footer from "./components/Footer";
 
 
 // const heading = (
@@ -122,12 +130,44 @@ import ResMenu from "./components/ResMenu";
 // Because we are using children routes than we have to use the Outlet in the main App.
 
 const App = () => {
+
+    const [userName, setUserName] = useState();
+    const { user , loginWithRedirect, isAuthenticated, logout} = useAuth0();
+
+    //authentication
+
+    useEffect(()=>{
+        //Make an Api call to authenicate
+        const data = {
+            name: "Tarun Jhamb",
+        }
+        setUserName(data.name);
+        
+    },[]);
+
+    // how to pass this New info to my App, using context provider, whole App is covered with usercontext, i can provide to a small portion of the app. I can create context, and i can overwrite them as well anywhere i want.
     return (
-        <div className="App-layout">
-            <Header/>
-            {/**This is a Comment in JS. Outlet is like a container component that are going to contain different component acoording to the route. */}
-            <Outlet/>
-        </div>
+        <Auth0Provider
+            domain="dev-zcnxelf37o725q0g.us.auth0.com"
+            clientId="DowDnKsfRB1J1Wmdp5XW10IPmuKWUcqW"
+            authorizationParams={{
+            redirect_uri: window.location.origin
+            }}
+        >
+        <Provider store={appStore}>
+        <UserContext.Provider value={{loggedInUser: userName, setUserName}}>
+            <div className="App-layout">
+                {/* <UserContext.Provider value={{loggedInUser: "Elon Musk"}}> */}
+                    {/* this is perfectly valid code */}
+                <Header/>
+                {/* </UserContext.Provider> */}
+                {/**This is a Comment in JS. Outlet is like a container component that are going to contain different component acoording to the route. */}
+                <Outlet/>
+                <Footer/>
+            </div>
+        </UserContext.Provider>
+        </Provider>
+        </Auth0Provider>
     )
 }
 
@@ -172,7 +212,19 @@ const appRouter = createBrowserRouter([
             {
                 path: '/restaurants/:resId',
                 element: <ResMenu/>,
-            }
+            },
+            {
+                path: '/cart',
+                element: <Cart/>,
+            },
+            // {
+            //     path: '/login',
+            //     element: <Login/>,
+            // },
+            // {
+            //     path: '/register',
+            //     element: <Register/>,
+            // },
         ],
         errorElement: <Error/>,
     }

@@ -1,9 +1,12 @@
 import Card, {withPromotedLabel} from "./Card";
 import resList from "../utils/mockData";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import Shimmer from "./Shimmer";
 import { Link } from "react-router-dom";
 import useOnlineStatus from "../utils/useOnlineStatus";
+import UserContext from "../utils/UserContext";
+import axios from 'axios';
+import ShimmerList from "./ShimmerList";
 
 const Body = ()=>{
     
@@ -44,13 +47,34 @@ const Body = ()=>{
         fetchData();
     },[]);
 
-    const fetchData = async() => {
-        const data = await fetch("https://www.swiggy.com/dapi/restaurants/list/v5?lat=28.7040592&lng=77.10249019999999&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING");
-        const json = await data.json();
+    
+    // const fetchData = async() => {
+    //     const data = await fetch("https://www.swiggy.com/dapi/restaurants/list/v5?lat=28.7040592&lng=77.10249019999999&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING");
+    //     const json = await data.json();
        
-        setlistOfRestaurants(json?.data?.cards[4]?.card?.card?.gridElements?.infoWithStyle?.restaurants);
-        setFilteredRestuarants(json?.data?.cards[4]?.card?.card?.gridElements?.infoWithStyle?.restaurants);
-    }
+    //     setlistOfRestaurants(json?.data?.cards[4]?.card?.card?.gridElements?.infoWithStyle?.restaurants);
+    //     setFilteredRestuarants(json?.data?.cards[4]?.card?.card?.gridElements?.infoWithStyle?.restaurants);
+    // }
+
+
+
+    const fetchData = async () => {
+        try {
+          const response = await axios.get('https://api.allorigins.win/get', {
+            params: {
+              url: 'https://www.swiggy.com/dapi/restaurants/list/v5?lat=28.7040592&lng=77.10249019999999&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING',
+            },
+          });
+    
+          const fetchedData = JSON.parse(response.data.contents); // Parse the JSON data
+    
+          const restaurants = fetchedData?.data?.cards[4]?.card?.card?.gridElements?.infoWithStyle?.restaurants;
+          setlistOfRestaurants(restaurants);
+          setFilteredRestuarants(restaurants);
+        } catch (error) {
+          console.error('Error fetching data:', error);
+        }
+      };
 
     // const fetchData = async ()=>{
     //     // this fetch is given by the BROWSERS.
@@ -81,7 +105,7 @@ const Body = ()=>{
 
     const onlineStatus = useOnlineStatus();
 
-    if(onlineStatus === false ) return (<h1>Looks like you are offline!! Please check your internet Connection</h1>);
+    if(onlineStatus === false ) return (<h1 className="font-bold text-2xl m-9">Looks like you are offline!! Please check your internet Connection</h1>);
 
 
     // "Conditional rendering": Having a condition to render our components.
@@ -89,9 +113,11 @@ const Body = ()=>{
     //     return <Shimmer/>;
     // }
 
+    const {setUserName, loggedInUser} = useContext(UserContext);
+
     // Conditional Rendering
     return listOfRestaurants.length === 0? <Shimmer/> :  (
-    <div className="body">
+    <div className="body h-auto bg-gray-100">
         <div className="Tools flex justify-start items-center">
             <div className="search-btn m-4 p-1">
                 <input className="border border-solid border-black p-1 rounded-lg" type="search" placeholder="search" value={searchText} onChange={(e)=>{
@@ -120,6 +146,10 @@ const Body = ()=>{
                     }
                 } >Top Rated Restaurant</button>
             </div>
+            {/* <div className="filter ">
+                <label>UserName : </label>
+                <input className="border border-black p-1" value={loggedInUser} onChange={(e)=>setUserName(e.target.value)}/>
+            </div> */}
         </div>
         <div className="cards-container flex flex-wrap">
             
