@@ -156,7 +156,7 @@ const App = () => {
         >
         <Provider store={appStore}>
         <UserContext.Provider value={{loggedInUser: userName, setUserName}}>
-            <div className="App-layout">
+            <div className="App-layout bg-slate-100">
                 {/* <UserContext.Provider value={{loggedInUser: "Elon Musk"}}> */}
                     {/* this is perfectly valid code */}
                 <Header/>
